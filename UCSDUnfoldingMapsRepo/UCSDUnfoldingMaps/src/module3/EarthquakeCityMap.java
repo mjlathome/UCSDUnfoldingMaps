@@ -56,9 +56,9 @@ public class EarthquakeCityMap extends PApplet {
 	private final int colourKey = color(175, 175, 175);	// grey
 	private final int colourText = color(0, 0, 0);	// black
 	
-	private final float radiusS = 4f;
-	private final float radiusM = 8f;
-	private final float radiusL = 12f;
+	private final float radiusS = 4f;	// small
+	private final float radiusM = 8f;	// medium
+	private final float radiusL = 12f;	// large
 	
 	public void setup() {
 		size(950, 600, OPENGL);
