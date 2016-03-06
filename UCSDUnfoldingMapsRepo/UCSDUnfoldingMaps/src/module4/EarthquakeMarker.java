@@ -65,6 +65,9 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		drawEarthquake(pg, x, y);
 		
 		// OPTIONAL TODO: draw X over marker if within past day		
+		// Module 4 - Step 10
+		pg.line(x - 5, y - 5, x + 5, y + 5);	// cross centred on x, y
+		pg.line(x + 5, y - 5, x - 5, y + 5);	
 		
 		// reset to previous styling
 		pg.popStyle();
@@ -77,6 +80,17 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	// You might find the getters below helpful.
 	private void colorDetermine(PGraphics pg) {
 		//TODO: Implement this method
+		// Module 4 - Step 9
+		float depth = getDepth();
+		
+		if (depth <= THRESHOLD_INTERMEDIATE) {
+			pg.fill(255, 255, 0);	// shallow - yellow
+		} else if (depth >= THRESHOLD_DEEP) {
+			pg.fill(255, 0, 0);	// deep - red			
+		} else {
+			pg.fill(0, 0, 255);	// intermediate - blue
+		}
+				
 	}
 	
 	

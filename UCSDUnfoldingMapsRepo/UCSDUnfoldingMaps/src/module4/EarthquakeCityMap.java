@@ -1,5 +1,6 @@
 package module4;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class EarthquakeCityMap extends PApplet {
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
-		size(900, 700, OPENGL);
+		size(900, 700 /*, OPENGL */);
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 650, 600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
@@ -76,8 +77,8 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+		// earthquakesURL = "test1.atom";
+		// earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
 		//earthquakesURL = "quiz1.atom";
@@ -141,17 +142,50 @@ public class EarthquakeCityMap extends PApplet {
 		textSize(12);
 		text("Earthquake Key", 50, 75);
 		
-		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
-		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
-		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
+		/* OLD code */
+//		fill(color(255, 0, 0));
+//		ellipse(50, 225, 15, 15);
+//		fill(color(255, 255, 0));
+//		ellipse(50, 275, 10, 10);
+//		fill(color(0, 0, 255));
+//		ellipse(50, 325, 5, 5);
+//		
+//		fill(0, 0, 0);
+//		text("5.0+ Magnitude", 75, 125);
+//		text("4.0+ Magnitude", 75, 175);
+//		text("Below 4.0", 75, 225);
 		
+		// Module 4 - Step 7
+		fill(255, 0 , 0);	// red
+		triangle(50, 95, 45, 105, 55, 105);  // triangle centred on x = 50, y = 100
 		fill(0, 0, 0);
-		text("5.0+ Magnitude", 75, 125);
-		text("4.0+ Magnitude", 75, 175);
-		text("Below 4.0", 75, 225);
+		text("City Marker", 75, 100);
+		
+		// Module 4 - Step 8
+		fill(255, 255 , 255);	// white
+		ellipse(50, 125, 10, 10);
+		rect(45, 145, 10, 10);	// rect centred on x = 50, y = 150 
+		fill(0, 0, 0);
+		text("Land Quake", 75, 125);
+		text("Ocean Quake", 75, 150);
+		
+		// Module 4 - Step 9
+		fill(255, 255, 0);	// shallow - yellow
+		ellipse(50, 200, 10, 10);
+		fill(0, 0, 255);	// intermediate - blue
+		ellipse(50, 225, 10, 10);
+		fill(255, 0, 0);	// deep - red
+		ellipse(50, 250, 10, 10);
+		fill(255, 255, 255);	// past hour - white
+		ellipse(50, 275, 10, 10);
+		line(45, 270, 55, 280);	// cross centred on x = 50, y = 275
+		line(55, 270, 45, 280);		
+		fill(0, 0, 0);
+		text("Size - Magnitude", 50, 175);
+		text("Shallow", 75, 200);
+		text("Intermediate", 75, 225);
+		text("Deep", 75, 250);
+		text("Past hour", 75, 275);			
 	}
 
 	
@@ -163,9 +197,14 @@ public class EarthquakeCityMap extends PApplet {
 	private boolean isLand(PointFeature earthquake) {
 		
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
-		
 		// TODO: Implement this method using the helper method isInCountry
-		
+		// Module 4 PA - Step 3
+		for (Marker country : countryMarkers) {
+			if (isInCountry(earthquake, country)) {
+				return true;
+			}
+		}
+			
 		// not inside any country
 		return false;
 	}
@@ -179,6 +218,32 @@ public class EarthquakeCityMap extends PApplet {
 	private void printQuakes() 
 	{
 		// TODO: Implement this method
+		// Module 4 - Step 4
+		int ocean = 0;
+		boolean first = true;
+		
+		for (Marker country : countryMarkers) {
+			int i = 0;
+			
+			for (Marker quake : quakeMarkers) {
+				String ctryName = (String) quake.getProperty("country");
+				if (ctryName != null) {
+					if (ctryName == country.getProperty("name")) {
+						i++;
+					}
+				} else if (first) {
+					ocean++;
+				}
+			}
+			
+			first = false;
+			
+			if (i > 0) {
+				System.out.println(country.getProperty("name") + ": " + i);
+			} 
+		}
+		
+		System.out.println("OCEAN QUAKES: " + ocean);	
 	}
 	
 	
