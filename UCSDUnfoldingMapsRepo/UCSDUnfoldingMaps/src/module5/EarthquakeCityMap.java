@@ -64,7 +64,7 @@ public class EarthquakeCityMap extends PApplet {
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
-		size(900, 700, OPENGL);
+		size(900, 700 /*, OPENGL */);
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 650, 600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
@@ -145,7 +145,17 @@ public class EarthquakeCityMap extends PApplet {
 	// 
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
+		System.out.println("x = " + mouseX + "; y = " + mouseY);
 		// TODO: Implement this method
+		// Module 5 - Step 5
+		for (Marker marker : markers) {
+			if (marker.isInside(map, mouseX, mouseY) && lastSelected == null) {
+				lastSelected = (CommonMarker) marker;				
+				marker.setSelected(true);			
+			} else {
+				marker.setSelected(false);
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
