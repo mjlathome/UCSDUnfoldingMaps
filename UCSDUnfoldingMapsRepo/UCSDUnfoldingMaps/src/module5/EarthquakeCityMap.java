@@ -170,6 +170,42 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		
+		// Module 5 - Step 7
+		
+		// clear the last clicked
+		if (lastClicked != null) {
+			lastClicked.setSelected(false);
+			lastClicked = null;	
+			unhideMarkers();
+		}
+
+		// check quakes for selection
+		for(Marker quake : quakeMarkers) {
+			
+			if (lastClicked == null && quake.isInside(map, mouseX, mouseY)) {				
+				lastClicked = (CommonMarker) quake;
+				quake.setHidden(false);
+				double threatRadius = ((EarthquakeMarker) quake).threatCircle();
+				for(Marker city : cityMarkers) {
+					if (city.getDistanceTo(quake.getLocation()) <= threatRadius) {
+						city.setHidden(false);
+					} else {
+						city.setHidden(true);
+					}
+				}				
+			} 				
+		}
+	
+		if (lastClicked != null) {
+			for(Marker quake : quakeMarkers) {
+				if (quake != lastClicked) {
+					quake.setHidden(true);
+				}
+			}
+			
+		}
+		
 	}
 	
 	
