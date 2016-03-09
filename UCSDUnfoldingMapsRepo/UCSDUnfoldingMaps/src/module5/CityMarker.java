@@ -56,11 +56,11 @@ public class CityMarker extends CommonMarker { // was: SimplePointMarker {
 		// TODO: Implement this method
 		// Module 5 - Step 6
 		pg.fill(255, 255, 0);
-		pg.rect(x - (2 * TRI_SIZE), y - (2 * TRI_SIZE), 200, 4 * TRI_SIZE);
+		pg.rect(x - 10, y - 10, 200, 20);
 		
 		pg.fill(0);
 		pg.textSize(12);
-		pg.text(getCity() + " " + getCountry() + " " + getPopulation(), x + TRI_SIZE, y + TRI_SIZE);		
+		pg.text(getCity() + " " + getCountry() + " " + getPopulation(), x + 5, y + 5);		
 	}
 	
 	
