@@ -62,6 +62,11 @@ public class EarthquakeCityMap extends PApplet {
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
 	
+	// Module 5 - Step 8
+	public CommonMarker getClicked() {
+		return lastClicked;
+	}
+	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
@@ -181,31 +186,17 @@ public class EarthquakeCityMap extends PApplet {
 		}
 
 		// check quakes for selection
-		for(Marker quake : quakeMarkers) {
-			
-			if (lastClicked == null && quake.isInside(map, mouseX, mouseY)) {				
-				lastClicked = (CommonMarker) quake;
-				quake.setHidden(false);
-				double threatRadius = ((EarthquakeMarker) quake).threatCircle();
-				for(Marker city : cityMarkers) {
-					if (city.getDistanceTo(quake.getLocation()) <= threatRadius) {
-						city.setHidden(false);
-					} else {
-						city.setHidden(true);
-					}
-				}				
-			} 				
-		}
-	
-		if (lastClicked != null) {
-			for(Marker quake : quakeMarkers) {
-				if (quake != lastClicked) {
-					quake.setHidden(true);
-				}
-			}
-			
-		}
+		lastClicked = (CommonMarker) getClickedMarker(quakeMarkers);
 		
+		if (lastClicked != null) {
+			quakeClicked();
+		} else {
+			lastClicked = (CommonMarker) getClickedMarker(cityMarkers);
+			if (lastClicked != null) {
+				cityClicked();
+			}					
+		}
+					
 	}
 	
 	
@@ -219,7 +210,61 @@ public class EarthquakeCityMap extends PApplet {
 			marker.setHidden(false);
 		}
 	}
-	
+
+	// Module 5 - Step 7
+	// get selected marker
+	private Marker getClickedMarker(List <Marker> markers) {
+		for(Marker marker : markers) {
+			if (marker.isInside(map, mouseX, mouseY)) {
+				return marker;
+			}
+		}
+		
+		return null;
+	}
+
+	// Module 5 - Step 7
+	// handle quake clicked	
+	private void quakeClicked() {
+		
+		for(Marker quake : quakeMarkers) {
+			if (quake != lastClicked) {
+				quake.setHidden(true);
+			} else {
+				quake.setHidden(false);
+				double threatRadius = ((EarthquakeMarker) quake).threatCircle();
+				for(Marker city : cityMarkers) {
+					if (city.getDistanceTo(quake.getLocation()) <= threatRadius) {
+						city.setHidden(false);
+					} else {
+						city.setHidden(true);
+					}
+				}								
+			}
+		}
+	}
+
+	// Module 5 - Step 7
+	// handle city clicked	
+	private void cityClicked() {
+		
+		for(Marker city : cityMarkers) {
+			if (city != lastClicked) {
+				city.setHidden(true);
+			} else {
+				city.setHidden(false);				
+				for(Marker quake : quakeMarkers) {
+					double threatRadius = ((EarthquakeMarker) quake).threatCircle();
+					if (quake.getDistanceTo(city.getLocation()) <= threatRadius) {
+						quake.setHidden(false);
+					} else {
+						quake.setHidden(true);
+					}
+				}								
+			}
+		}
+	}
+		
 	// helper method to draw key in GUI
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
