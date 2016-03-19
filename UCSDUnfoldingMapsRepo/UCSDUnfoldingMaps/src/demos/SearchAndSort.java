@@ -55,14 +55,16 @@ public class SearchAndSort {
 	public static String findAirportCode(String toFind, 
 			ArrayList<Airport> airports)
 	{
-		int index = 0;
+		int index = 0;	// variable to step through the array
 		while (index < airports.size()) {
+			// use .equals to compare the string representations NOT the same object
 			if (toFind.equals(airports.get(index).getCity())) {
+				// match found
 				return airports.get(index).getCode3();
 			}
-			index++;
+			index++;	// increment index
 		}
-		return null;
+		return null;	// not found
 	}
 	
 	// Binary search for the airport code
